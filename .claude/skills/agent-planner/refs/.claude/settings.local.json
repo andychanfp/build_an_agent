@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Read(//Users/a.chan.3/Desktop/Foodpanda/agentic/build_an_agent/.claude/**)",
+      "Read(//Users/a.chan.3/Desktop/Foodpanda/agentic/build_an_agent/**)"
+    ]
+  }
+}
