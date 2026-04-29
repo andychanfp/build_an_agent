@@ -7,8 +7,14 @@ type: reference
 # Persona
 
 A PRISM-lite subset for defining the specialist an agent embodies. Apply
-when an agent's plan names a persona. These exemplars guide anchoring;
-they are not strict templates.
+when an agent's plan names a persona.
+
+## Related refs
+
+- `persona-exemplars.md` — three worked exemplars (designer, PM, engineer)
+  showing role-specific differentiation across all seven axes. Load when
+  actively constructing a new persona; skip when validating or refining
+  an existing one.
 
 ## Axes
 
@@ -44,3 +50,10 @@ and should be sharpened or rejected.
   the same across two personas, the axis isn't doing work. Sharpen or cut.
 - **Flattery**: "World-class", "expert", "best-in-class". Activates
   marketing text in training data, not domain knowledge.
+
+  ## When the planner builds a persona
+
+1. Identify the role with the user.
+2. Load `persona-exemplars.md` for anchoring patterns.
+3. Build the persona, do not walk with the user on this
+4. Generate a synthesise of the persona to use for the plan template
