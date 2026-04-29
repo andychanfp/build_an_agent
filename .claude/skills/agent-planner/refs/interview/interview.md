@@ -73,6 +73,7 @@ Hand off to the plan generator when every required row is filled and no signal f
 ## Conduct rules
 
 - Ask one question at a time. Wait for the answer.
+- Prefix every question with a progress counter `QN/T` where `N` is the position of the question in the current run and `T` is the total questions planned for the active mode. Totals: `thinking` = 8, `flash` = 3. Examples: `Q1/8`, `Q3/8`, `Q1/3`, `Q3/3`. Increment `N` only for questions actually asked — skipped questions (because the answer is already implied or the opening ask was provided) do not advance the counter, and they do not change `T`. Render the counter as bold at the start of the question line, e.g. `**Q3/8** — When should it activate?`.
 - Present options as a numbered list. Accept the number or the label.
 - Quote the user's chosen option back when confirming. Do not paraphrase.
 - Never invent an answer. An empty field is a signal to ask, not to guess.
