@@ -49,7 +49,7 @@ Ask the user:
 
 > Which agents should I run?
 > 1. Both — audit then quality
-> 2. Audit only — structural completeness check
+> 2. Audit only (recommended minimum) — structural completeness check
 > 3. Quality only — content depth and language check
 
 Wait for the answer. Store `agents` as `[audit, quality]`, `[audit]`, or `[quality]`. Produce `agents`.
@@ -58,7 +58,7 @@ Wait for the answer. Store `agents` as `[audit, quality]`, `[audit]`, or `[quali
 Ask the user:
 
 > Which mode?
-> 1. Sprint — top 3 findings per agent, fast
+> 1. Sprint — top 3 findings per agent, only P0 issues
 > 2. Ultra — exhaustive findings, ranked by severity
 
 Wait for the answer. Store `mode` as `sprint` or `ultra`. Produce `mode`.
