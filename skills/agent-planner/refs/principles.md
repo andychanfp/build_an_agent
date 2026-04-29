@@ -8,7 +8,7 @@ type: reference
 
 ## Structure
 **Single responsibility**: Each section owns exactly one concern; split when scope creeps.
-**Hierarchy first**: Goal → steps → verification. Never reverse the order.
+**Order within sections**: Goal first, steps second, verification last.
 **References over inline**: Reusable patterns belong in `/refs`, not repeated in SKILL.md.
 
 ## Instructions
@@ -23,5 +23,5 @@ type: reference
 
 ## Quality
 **Testable criteria**: Define done as an observable outcome, not a process followed.
-**Fail-safe defaults**: When a rule has exceptions, state the default, then the exception.
+**Defaults before exceptions**: State the rule, then the exception on a new line. Example: "Use imperatives. Exception: rationale paragraphs may use declarative voice."
 **Stable vocabulary**: Use the same term for the same concept throughout; never synonym-swap.
