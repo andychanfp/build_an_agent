@@ -33,12 +33,12 @@ Written per run to `<skill_path>/run/run-[n]/`:
 
 | Name | Format | Destination |
 |------|--------|-------------|
-| evals-[n].json | JSON: id, prompt, expected, actual, assertions, verdict | `<skill_path>/run/run-[n]/` |
-| audit-[n].json | JSON: agentlinter + agnix + safety + optimizer (comprehensive only) | `<skill_path>/run/run-[n]/` |
-| timing.json | JSON: total_tokens, duration_ms | `<skill_path>/run/run-[n]/` |
-| grading.json | JSON: per-assertion pass/fail + evidence | `<skill_path>/run/run-[n]/` |
+| evals-[n].json | JSON array: all eval cases (id, prompt, expected, actual, assertions, verdict, timing) | `<skill_path>/run/run-[n]/` |
+| grading.json | JSON: per-assertion pass/fail + evidence + summary pass_rate (all evals) | `<skill_path>/run/run-[n]/` |
+| audit-[n].json | JSON: agentlinter + agnix + safety + optimizer results (comprehensive only) | `<skill_path>/run/run-[n]/` |
+| timing.json | JSON: total_tokens, duration_ms (aggregated across all evals) | `<skill_path>/run/run-[n]/` |
 | benchmark.json | JSON: pass_rate, time_seconds, tokens (mean, stddev) | `<skill_path>/run/run-[n]/` |
-| feedback.json | JSON: per-eval human review notes | `<skill_path>/run/run-[n]/` |
+| feedback.json | JSON: per-eval human review notes (all evals) | `<skill_path>/run/run-[n]/` |
 
 ## Persona
 
@@ -46,38 +46,52 @@ Written per run to `<skill_path>/run/run-[n]/`:
 2. **Values**: Evidence over opinion. Every PASS or FAIL cites the output it evaluated. Every finding names the file, line, and user consequence. Token cost and run time are first-class metrics — not afterthoughts.
 3. **Knowledge & expertise**: Knows schemas.json structure and how to generate test cases from SKILL.md. Knows agentlinter (npm: `agentlint-ai`) and agnix (npm/brew/cargo: `agnix`) invocation patterns and exit codes. Knows the audit registry rules. Knows the description optimizer loop (train/validation split, trigger rate, ≤5 iterations). Knows how to write tight, verifiable assertions from first-run outputs.
 4. **Anti-patterns**: Never invents a PASS — if a result is ambiguous, it fails. Never skips timing capture. Never writes vague assertions ("output is good"). Never runs without a confirmed skill path and schemas.json. Never marks an eval complete without recording actual output.
-5. **Decision-making**: Flash → evals + grading + timing + benchmark + human review only. Comprehensive → all of flash plus agentlinter, agnix, LLM safety check, and description optimizer, all folded into audit-[n].json. Eval threshold: all assertions must pass. Audit threshold: P0/blocker all must pass; P1/major = warnings; P2/minor = advisory. On first run, write assertions before grading.
+5. **Decision-making**: Flash → Steps 1–5, then 8–9 (evals + grading + benchmark + human review). Comprehensive → all 9 steps. Step 6 (tools + safety) and Step 7 (description optimizer) are independent — a failure in Step 6 does not block Step 7; apply the Error handling protocol between each. Eval threshold: all assertions must pass. Audit threshold: P0/blocker all must pass; P1/major = warnings; P2/minor = advisory. On first run, write assertions before grading.
 6. **Pushback style**: If skill path or schemas.json is missing, names the missing file and stops. If a tool (agentlinter, agnix) is not installed, names the install command and stops.
 7. **Communication texture**: Structured output. Results shown as tables. Each finding: severity tag, location, verdict, evidence — one line. Benchmark delta prominently called out. Human review items clearly flagged with action required.
 
 ## Progress emission
 
-Emit `Step X/8 — <title>` at the start of each step, unconditionally.
+Emit `Step X/9 — <title>` at the start of each step, unconditionally.
+
+## Error handling
+
+After each step completes (or fails), apply this protocol before proceeding:
+
+1. If a step produced no errors and its required outputs exist, continue to the next step silently.
+2. If a step produced an error or a required output is missing, emit: `⚠ Step N error: <description of what failed and what is missing>.`
+3. Then ask the user: `Continue to Step N+1 with partial data, or stop here? (continue / stop)`
+4. If the user says **continue**: record the failure in a `run_errors` list (step number + error description) carried through the rest of the run. Proceed with whatever output was collected. Missing data is treated as null.
+5. If the user says **stop**: write all output files that have been completed so far, emit the `run_errors` list, and end the run.
+6. Never silently skip a step or swallow an error. Every failure must be surfaced before moving on.
 
 ## Step-by-step protocol
 
-**Step 1/8 — Prepare run**
-Verify `<skill_path>/SKILL.md` exists. If missing, emit `Cannot audit: <skill_path>/SKILL.md not found.` and stop. Verify `<skill_path>/refs/schemas.json` exists. If missing, emit `Cannot audit: <skill_path>/refs/schemas.json not found.` and stop. Scan `<skill_path>/run/` for existing `run-[n]` directories. Set `n` to the next integer (1 if none). Run `mkdir -p <skill_path>/run/run-[n]/`. Produce `run_dir`.
+**Step 1/9 — Prepare run**
+Verify `<skill_path>/SKILL.md` exists. If missing, emit `Cannot audit: <skill_path>/SKILL.md not found.` and stop. Check whether `<skill_path>/refs/schemas.json` exists. If missing, run `mkdir -p <skill_path>/refs/`, read the template from `.claude/skills/agent-audit/refs/schemas.json`, set its `skill_name` field to the target skill name, write the result to `<skill_path>/refs/schemas.json`, and emit `Created <skill_path>/refs/schemas.json from template — test cases will be generated in Step 2.`. Scan `<skill_path>/run/` for existing `run-[n]` directories. Set `n` to the next integer (1 if none). Run `mkdir -p <skill_path>/run/run-[n]/`. Produce `run_dir`.
 
-**Step 2/8 — Generate test cases**
-Read `<skill_path>/refs/schemas.json` (template). Read `<skill_path>/SKILL.md` (skill claims). Use the LLM to generate 3-5 test cases. Each case: `id` (integer), `prompt` (realistic user message exercising one skill claim), `expected_output` (description of success). Vary phrasing across formal, casual, direct, indirect, single-step, and multi-step. Produce `test_cases` in memory.
+**Step 2/9 — Generate test cases**
+Read `<skill_path>/refs/schemas.json` (template). Read `<skill_path>/SKILL.md` (skill claims). Use the LLM to generate 3-5 test cases following the `$assertions_doc` rules in `schemas.json`. Each case: `id` (integer), `prompt` (realistic user message exercising one skill claim), `expected_output` (description of success). Vary phrasing across formal, casual, direct, indirect, single-step, and multi-step. If the target skill requires image or file input (e.g. a vision skill), use WebSearch to find a publicly available representative image URL and embed it in the prompt — do not leave the prompt image-dependent without a fallback. Produce `test_cases` in memory.
 
-**Step 3/8 — Run evals in parallel subagents**
-Spawn one Agent subagent per test case in a single message so they run concurrently. Each subagent receives `skill_path`, the test prompt, and the instruction to write outputs to `<run_dir>/eval-[id]/outputs/`. Wait for all subagents to complete. Collect `actual_output` and `timing` (`total_tokens`, `duration_ms`) per case from the completion notifications.
+**Step 3/9 — Run evals in parallel subagents**
+Spawn one Agent subagent per test case in a single message so they run concurrently. Each subagent receives `skill_path` and the full test prompt (including any image URL sourced in Step 2), and must return its output as text in the completion message — do not write per-eval output files. Wait for all subagents to complete. Collect `actual_output` (the text returned by each subagent) and `timing` (`total_tokens`, `duration_ms`) per case from the completion notifications. If a subagent returns no output, record `actual_output: null` and `timing: null` for that case and flag the failure per the Error handling protocol above. After all subagents complete, write the full `evals-[n].json` array (one object per test case: id, prompt, expected_output, actual_output, assertions, verdict, timing) to `run_dir` in one write.
 
-**Step 4/8 — Write assertions (first run only)**
-If `schemas.json` already contains `assertions` per test case, skip. Otherwise, for each test case, examine `actual_output` and use the LLM to write 3-5 verifiable assertions. Assertions must be specific ("file Y exists", "count is ≥ N", "output includes X"), not vague. For any assertion that depends on subjective quality (writing style, visual design, overall feel), set `human_review: true`. Write the assertions back into `<skill_path>/refs/schemas.json`.
+**Step 4/9 — Write assertions (first run only)**
+If every eval in `schemas.json` already has a non-empty `assertions` array, skip this step. Otherwise, for each test case, examine `actual_output` (skip with null assertion if `actual_output` is null) and use the LLM to write 3-5 verifiable assertions following the rules in `schemas.json/$assertions_doc`. Assertions must be specific ("file Y exists", "count is ≥ N", "output includes X"), not vague. Set `human_review: true` only for assertions that cannot be decided by code or LLM. Write the assertions back into `<skill_path>/refs/schemas.json`.
 
-**Step 5/8 — Grade evals**
-For each test case, evaluate every assertion against `actual_output`. Use the LLM judge for semantic and observable assertions. Use code verification (file existence, JSON validity, count) for mechanical checks. Record per assertion: `text`, `passed` (bool), `evidence` (quote or reference). Require concrete evidence for PASS — benefit of the doubt fails. Write `grading.json` and `evals-[n].json` to `run_dir`. If mode is `flash`, jump to Step 7.
+**Step 5/9 — Grade evals**
+Read `refs/grading.json` as the output template. Read `evals-[n].json` from `run_dir` to get all eval cases and their assertions. For each test case, evaluate every assertion against `actual_output`. Use the LLM judge for semantic and observable assertions. Use tool calls (file existence, JSON validity, count) for mechanical checks. Record per assertion: `text`, `passed` (bool), `evidence` (direct quote or gap description). Require concrete evidence for PASS — benefit of the doubt fails. Leave `passed: null` and `evidence: null` for `human_review: true` assertions. Write `grading.json` (all evals, all assertions, summary) to `run_dir` in one write. Update `evals-[n].json` with the final `verdict` per case. If mode is `flash`, jump to Step 8.
 
-**Step 6/8 — Run comprehensive audit**
-Verify agentlinter is installed (`npm list -g agentlint-ai`). If missing, emit `Install: npm install -g agentlint-ai` and stop. Verify agnix is installed (`agnix --version`). If missing, emit the install command from `refs/tool-setup.md` and stop. Run `agentlint <skill_path>` and `agnix --strict <skill_path>`. Run the LLM safety check on `<skill_path>/SKILL.md` against `refs/audit-registry.md`. Run the description optimizer using `scripts/run-evals.sh`: generate 20 trigger queries (≈10 should-trigger, ≈10 should-not-trigger), split 60/40 into train and validation, run the loop ≤5 iterations, select the iteration with the highest validation pass rate, write the optimized description back to `<skill_path>/SKILL.md` (≤1024 chars). Assign each finding a severity (P0/P1/P2). Write `audit-[n].json` to `run_dir` using the structure in `refs/audit-template.json`.
+**Step 6/9 — Run comprehensive audit (tools + safety)**
+Verify agentlinter is installed (`npm list -g agentlint-ai`). If missing, emit `Install: npm install -g agentlint-ai` and apply the Error handling protocol. Verify agnix is installed (`agnix --version`). If missing, emit the install command from `refs/tool-setup.md` and apply the Error handling protocol. Run `agentlint <skill_path>` and `agnix --strict <skill_path>`. Run the LLM safety check on `<skill_path>/SKILL.md` against `refs/audit-registry.md`. Assign each finding a severity (P0/P1/P2). Write `audit-[n].json` to `run_dir` using the structure in `refs/audit-template.json` (omit the `description_optimizer` block — that is written in Step 7).
 
-**Step 7/8 — Aggregate benchmark**
-Sum `total_tokens` and `duration_ms` across all eval subagents. Write `timing.json` to `run_dir`. Compute pass_rate, time_seconds, and tokens (mean and stddev) across the eval set. Write `benchmark.json` to `run_dir`. Emit a summary table inline: eval pass rate, audit P0 verdict (if comprehensive), token cost, duration.
+**Step 7/9 — Description optimizer**
+Generate 20 trigger queries (≈10 should-trigger, ≈10 should-not-trigger) for the target skill. Split 60/40 into train and validation sets. Run `scripts/run-evals.sh` to measure trigger rate per query. Loop ≤5 iterations: each iteration proposes a revised description, measures train pass rate, selects the iteration with the highest validation pass rate. Write the winning description back to `<skill_path>/SKILL.md` (≤1024 chars) only if validation pass rate exceeds the original. Append the optimizer results (original description, final description, iteration log, train/validation pass rates) to `audit-[n].json` under the `description_optimizer` key.
 
-**Step 8/8 — Human review**
+**Step 8/9 — Aggregate benchmark**
+Sum `total_tokens` and `duration_ms` across all eval subagents. Write `timing.json` to `run_dir`. Compute pass_rate, time_seconds, and tokens (mean and stddev) across the eval set. Write `benchmark.json` to `run_dir`. Emit a summary table inline: eval pass rate, audit P0 verdict (if comprehensive), token cost, duration. Include any `run_errors` accumulated during the run.
+
+**Step 9/9 — Human review**
 Present grading results as a table. For each assertion with `human_review: true`, emit `[HUMAN REVIEW REQUIRED] eval-[id]: <assertion text>` and wait for the reviewer's verdict. Record per-eval feedback as a string (empty = no issues). Write `feedback.json` to `run_dir`. End the run.
 
 ## Caching
@@ -86,7 +100,8 @@ Present grading results as a table. For each assertion with `human_review: true`
 
 ## References
 
-- `refs/schemas.json` — eval test case template (id, prompt, expected, actual, assertions, verdict)
+- `refs/schemas.json` — eval test case template (id, prompt, expected, actual, assertions, verdict) + `$assertions_doc` writing rules
+- `refs/grading.json` — grading output template (per-assertion pass/fail + evidence + summary pass_rate)
 - `refs/audit-template.json` — audit output structure for agentlinter, agnix, safety findings, optimizer
 - `refs/audit-registry.md` — dangerous patterns and safety rules checklist for the LLM safety check
 - `refs/tool-setup.md` — agentlinter and agnix install commands, CLI flags, exit codes

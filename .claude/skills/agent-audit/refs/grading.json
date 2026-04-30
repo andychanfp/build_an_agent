@@ -1,0 +1,33 @@
+{
+  "$schema_doc": "Grading output template written to <skill_path>/run/run-[n]/grading.json by agent-audit Step 5. One entry per eval, one entry per assertion. Populated after actual_output is available from Step 3. The summary.pass_rate feeds benchmark.json in Step 8.",
+  "$grading_rules": {
+    "pass_requires": "Concrete evidence — a direct quote from actual_output, a file path that was verified to exist, or a count that was checked. Inference or assumption fails.",
+    "fail_evidence": "Name the specific gap: what was expected, what was found (or absent), and where.",
+    "human_review_pending": "Assertions with human_review: true are left passed: null and evidence: null until Step 9 resolves them. Do not guess.",
+    "verdict_rule": "verdict = pass only if every assertion.passed === true. A single false or null (non-human-review) assertion fails the eval.",
+    "mechanical_checks": "File existence, JSON validity, and counts must be verified with tool calls — not inferred from output text."
+  },
+  "skill_name": "<target-skill-name>",
+  "run": null,
+  "evals": [
+    {
+      "id": 1,
+      "verdict": null,
+      "assertions": [
+        {
+          "text": "<assertion text copied verbatim from schemas.json>",
+          "passed": null,
+          "evidence": "<direct quote from actual_output proving passed=true, or the specific gap proving passed=false>",
+          "human_review": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_assertions": null,
+    "passed": null,
+    "failed": null,
+    "human_review_pending": null,
+    "pass_rate": null
+  }
+}
