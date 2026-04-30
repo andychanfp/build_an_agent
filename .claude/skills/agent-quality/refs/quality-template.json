@@ -1,0 +1,38 @@
+{
+  "$schema_doc": "Output template for agent-quality. skill_name identifies the target skill. run_number matches the run-[n] directory. test_input is the exact prompt used for both agents. vanilla_prompt is the synthesised plain-prose instruction given to Agent A. vanilla_output and skill_output are full verbatim completions. scoring has three dimensions each scored 1-10; null means the agent failed to return output for that run. recommendation is one of: skill_better, marginal, opus_alone_better. recommendation_grade is the display emoji + label. recommendation_rationale is a single paragraph.",
+  "skill_name": "<target-skill-name>",
+  "run_number": null,
+  "model": "claude-opus-4-7",
+  "test_input": null,
+  "vanilla_prompt": null,
+  "vanilla_output": null,
+  "skill_output": null,
+  "vanilla_timing": {
+    "total_tokens": null,
+    "duration_ms": null
+  },
+  "skill_timing": {
+    "total_tokens": null,
+    "duration_ms": null
+  },
+  "scoring": {
+    "completeness": {
+      "vanilla": null,
+      "skill": null,
+      "rationale": null
+    },
+    "structure": {
+      "vanilla": null,
+      "skill": null,
+      "rationale": null
+    },
+    "actionability": {
+      "vanilla": null,
+      "skill": null,
+      "rationale": null
+    }
+  },
+  "recommendation": null,
+  "recommendation_grade": null,
+  "recommendation_rationale": null
+}
