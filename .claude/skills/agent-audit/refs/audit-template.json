@@ -1,0 +1,74 @@
+{
+  "$schema_doc": "Audit output template consumed by agent-audit Step 6 (comprehensive mode only). Each top-level block holds the results of one audit pass. Severity values: P0/blocker (must fix), P1/major (warning), P2/minor (advisory). Final verdict pass requires every P0 finding cleared.",
+  "skill_name": "<target-skill-name>",
+  "run_number": 0,
+  "mode": "comprehensive",
+  "agentlinter": {
+    "version": "<output of `agentlint --version`>",
+    "exit_code": 0,
+    "command": "agentlint <skill_path>",
+    "findings": [
+      {
+        "rule": "<rule id from agentlinter>",
+        "severity": "P0",
+        "location": "<file:line or section>",
+        "message": "<finding text>",
+        "fix": "<recommended fix>"
+      }
+    ]
+  },
+  "agnix": {
+    "version": "<output of `agnix --version`>",
+    "exit_code": 0,
+    "command": "agnix --strict <skill_path>",
+    "findings": [
+      {
+        "rule": "<rule id from agnix>",
+        "severity": "P1",
+        "location": "<file:line>",
+        "message": "<finding text>",
+        "autofix_available": false
+      }
+    ]
+  },
+  "safety_findings": [
+    {
+      "pattern": "<pattern id from audit-registry.md>",
+      "severity": "P0",
+      "location": "<file:line or section>",
+      "evidence": "<quoted snippet from SKILL.md>",
+      "consequence": "<what could break for the user>"
+    }
+  ],
+  "description_optimizer": {
+    "iterations_run": 0,
+    "max_iterations": 5,
+    "train_set_size": 12,
+    "validation_set_size": 8,
+    "runs_per_query": 3,
+    "trigger_rate_threshold": 0.5,
+    "original_description": "<verbatim original description string>",
+    "final_description": "<verbatim final description string written back to SKILL.md>",
+    "train_pass_rate": 0.0,
+    "validation_pass_rate": 0.0,
+    "selected_iteration": 0,
+    "iteration_log": [
+      {
+        "iteration": 1,
+        "description": "<the description tried in this iteration>",
+        "train_pass_rate": 0.0,
+        "validation_pass_rate": 0.0,
+        "failures": [
+          { "query": "<failed query text>", "should_trigger": true, "trigger_rate": 0.33 }
+        ]
+      }
+    ]
+  },
+  "verdict": {
+    "p0_count": 0,
+    "p1_count": 0,
+    "p2_count": 0,
+    "passed": true,
+    "rule": "passed = (p0_count === 0)"
+  }
+}
