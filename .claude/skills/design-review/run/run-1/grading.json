@@ -1,0 +1,157 @@
+{
+  "skill_name": "design-review",
+  "run": 1,
+  "evals": [
+    {
+      "id": 1,
+      "verdict": "pending",
+      "assertions": [
+        {
+          "text": "Output contains 'Step 1/5' through 'Step 5/5' headers in order",
+          "passed": true,
+          "evidence": "\"Emitted Step 1/5 through Step 5/5 headers in order.\"",
+          "human_review": false
+        },
+        {
+          "text": "Output includes a section headed 'Blocker' with at least one finding",
+          "passed": true,
+          "evidence": "\"BLOCKER (3 findings: no loading state on Start tap causing double-submit risk; no location-denied fallback leaving user stranded; no offline indicator on silent failure)\"",
+          "human_review": false
+        },
+        {
+          "text": "Output includes a 'Top Fix' or 'Top Fixes' section with at least 3 items",
+          "passed": true,
+          "evidence": "\"Top Fixes: 5 items ranked by user impact — (1) loading state on Start tap, (2) location-denied fallback with manual address entry, (3) first-install-only splash with session resume for returning users, (4) scrim overlay for headline contrast, (5) accessible label on Start CTA.\"",
+          "human_review": false
+        },
+        {
+          "text": "Each finding in the Blocker section names a broken state and a user consequence in one sentence",
+          "passed": null,
+          "evidence": null,
+          "human_review": true
+        },
+        {
+          "text": "Output does not contain the phrase 'looks good'",
+          "passed": true,
+          "evidence": "The phrase 'looks good' does not appear anywhere in the actual_output.",
+          "human_review": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "verdict": "pass",
+      "assertions": [
+        {
+          "text": "Output contains 'Step 1/5' through 'Step 5/5' headers in order",
+          "passed": true,
+          "evidence": "\"Emitted Step 1/5 through Step 5/5 headers in order.\"",
+          "human_review": false
+        },
+        {
+          "text": "Output includes a section headed 'Blocker' or 'BLOCKER' with at least one finding",
+          "passed": true,
+          "evidence": "\"BLOCKER (4 findings: card shows food item not restaurant entity preventing selection decision; single card per viewport incompatible with sub-10-second scan goal; white text on unscrimmed hero image fails contrast; no loading state)\"",
+          "human_review": false
+        },
+        {
+          "text": "Output includes a finding about contrast or tap target size referencing a specific UI element",
+          "passed": true,
+          "evidence": "\"white text on unscrimmed hero image fails contrast\" (Blocker); \"active filter chip fails contrast ~2.5:1\" (Major); \"heart/basket icons likely undersized <48dp\" (Minor).",
+          "human_review": false
+        },
+        {
+          "text": "Output includes a Top Fixes section with 3-5 ranked items",
+          "passed": true,
+          "evidence": "\"Top Fixes: 5 items — (1) replace food-item card with restaurant card, (2) increase listing density to 3+ cards above fold, (3) add gradient scrim and fix active chip contrast, (4) loading skeleton and offline state, (5) persistent search field and full category filter row.\"",
+          "human_review": false
+        },
+        {
+          "text": "Output does not contain the phrase 'looks good'",
+          "passed": true,
+          "evidence": "The phrase 'looks good' does not appear anywhere in the actual_output.",
+          "human_review": false
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "verdict": "pass",
+      "assertions": [
+        {
+          "text": "Output contains 'Step 1/5' through 'Step 5/5' headers in order",
+          "passed": true,
+          "evidence": "\"Emitted Step 1/5 through Step 5/5 headers in order.\"",
+          "human_review": false
+        },
+        {
+          "text": "Output includes at least one finding from the error-state taxonomy (loading, error, offline, empty, permission)",
+          "passed": true,
+          "evidence": "\"no loading state on menu fetch\" (Blocker); \"no offline state\" (Major); \"no zero-state for empty category\" (Major).",
+          "human_review": false
+        },
+        {
+          "text": "Output includes at least one WCAG or accessibility finding (contrast, tap target, or screen reader)",
+          "passed": true,
+          "evidence": "\"white text on uncontrolled photo fails contrast\" (Blocker).",
+          "human_review": false
+        },
+        {
+          "text": "Output includes a Top Fixes section with at least 3 entries",
+          "passed": true,
+          "evidence": "\"Top Fixes: 5 items — (1) resolve screen routing/PRD labelling error, (2) scrim behind price/name text, (3) loading skeleton, (4) active chip state and basket badge, (5) all missing error states.\"",
+          "human_review": false
+        },
+        {
+          "text": "Output flags the mismatch between the PRD (checkout screen) and the actual image (browse screen)",
+          "passed": true,
+          "evidence": "\"Critical pre-audit flag emitted: PRD describes checkout screen but actual image is a browse listing screen.\" and \"BLOCKER (3 findings: screen does not match PRD intent — no checkout path exists; ...)\"",
+          "human_review": false
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "verdict": "pass",
+      "assertions": [
+        {
+          "text": "Output contains 'Step 1/5' through 'Step 5/5' headers in order",
+          "passed": true,
+          "evidence": "\"Emitted Step 1/5 through Step 5/5 headers in order.\"",
+          "human_review": false
+        },
+        {
+          "text": "Output does not invoke a refusal template — scope_decision is in-scope",
+          "passed": true,
+          "evidence": "\"Scope check: in-scope (not rejected). No refusal template invoked.\"",
+          "human_review": false
+        },
+        {
+          "text": "Output names at least one of: offline state, loading state, or empty state as a missing error state",
+          "passed": true,
+          "evidence": "\"Error-state taxonomy gaps identified: Empty (no zero-state for no restaurants in range), Loading (no loading indicator after Start tap), Error (no API/location error state), Offline (PRD-confirmed gap — no indicator, no fallback), Permission (no pre-rationale, no denied state).\"",
+          "human_review": false
+        },
+        {
+          "text": "Output includes at least one WCAG finding naming contrast (SC 1.4.3) or tap target size",
+          "passed": true,
+          "evidence": "\"WCAG findings: white headline text fails contrast over bright image patches (SC 1.4.3)\"",
+          "human_review": false
+        },
+        {
+          "text": "Top Fixes section is present and items are described as ranked by user impact",
+          "passed": true,
+          "evidence": "\"Top Fixes: 5 items ranked by user impact — (1) all four error states for Start tap, (2) surface restaurant content before commitment, (3) fix CTA label and add pre-permission rationale, (4) headline contrast fix, (5) session continuity for returning users.\"",
+          "human_review": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_assertions": 20,
+    "passed": 19,
+    "failed": 0,
+    "human_review_pending": 1,
+    "pass_rate": 0.95
+  }
+}

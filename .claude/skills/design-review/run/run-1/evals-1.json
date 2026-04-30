@@ -1,0 +1,174 @@
+[
+  {
+    "id": 1,
+    "prompt": "Please review this design. Here is the PRD: This is a food delivery app home screen. Goal: users can browse restaurants and start an order within 2 taps. Audience: mobile users on iOS. Success metric: 80% of users reach the restaurant menu page within 30 seconds of opening the app.\n\nScreenshot: https://raw.githubusercontent.com/afgprogrammer/Flutter-food-delivery-app-ui/master/assets/screenshot/one.png",
+    "expected_output": "A severity-grouped markdown review (Blocker / Major / Minor / Nit sections) with at least one finding per section where applicable, each finding naming the broken state and user consequence. Followed by a top_fixes ordered list of 3-5 items ranked by user impact. Step 1/5 through Step 5/5 headers emitted in order.",
+    "actual_output": "Emitted Step 1/5 through Step 5/5 headers in order. Scope check: in-scope. Four audit passes run (Nielsen, error-state taxonomy, edge cases, WCAG 2.2). Severity-grouped review produced: BLOCKER (3 findings: no loading state on Start tap causing double-submit risk; no location-denied fallback leaving user stranded; no offline indicator on silent failure). MAJOR (5 findings: ambiguous headline copy slowing first tap; no pre-permission rationale increasing denial rate; returning user forced through splash breaking 2-tap goal; white text fails WCAG 1.4.3 contrast on bright image patches; Start CTA has no accessible VoiceOver label). MINOR (3 findings: tagline below CTA competes visually; no zero-state for no restaurants; Start label violates iOS HIG action-verb convention). NIT (2 findings: status bar icon collision risk; decorative image needs alt-empty annotation). Top Fixes: 5 items ranked by user impact — (1) loading state on Start tap, (2) location-denied fallback with manual address entry, (3) first-install-only splash with session resume for returning users, (4) scrim overlay for headline contrast, (5) accessible label on Start CTA.",
+    "assertions": [
+      {
+        "text": "Output contains 'Step 1/5' through 'Step 5/5' headers in order",
+        "passed": true,
+        "evidence": "\"Emitted Step 1/5 through Step 5/5 headers in order.\"",
+        "human_review": false
+      },
+      {
+        "text": "Output includes a section headed 'Blocker' with at least one finding",
+        "passed": true,
+        "evidence": "\"BLOCKER (3 findings: no loading state on Start tap causing double-submit risk; no location-denied fallback leaving user stranded; no offline indicator on silent failure)\"",
+        "human_review": false
+      },
+      {
+        "text": "Output includes a 'Top Fix' or 'Top Fixes' section with at least 3 items",
+        "passed": true,
+        "evidence": "\"Top Fixes: 5 items ranked by user impact — (1) loading state on Start tap, (2) location-denied fallback with manual address entry, (3) first-install-only splash with session resume for returning users, (4) scrim overlay for headline contrast, (5) accessible label on Start CTA.\"",
+        "human_review": false
+      },
+      {
+        "text": "Each finding in the Blocker section names a broken state and a user consequence in one sentence",
+        "passed": null,
+        "evidence": null,
+        "human_review": true
+      },
+      {
+        "text": "Output does not contain the phrase 'looks good'",
+        "passed": true,
+        "evidence": "The phrase 'looks good' does not appear anywhere in the actual_output.",
+        "human_review": false
+      }
+    ],
+    "verdict": "pending",
+    "timing": {
+      "total_tokens": 32101,
+      "duration_ms": 320778
+    }
+  },
+  {
+    "id": 2,
+    "prompt": "audit this UI — I need a design review. Context from the PRD: This is a food delivery restaurant listing screen. Users tap on a restaurant card to view its menu. Key user goal: find and select a restaurant in under 10 seconds. Target audience: hungry users on a time constraint, mobile (Android). Success metric: task completion rate of 85%.\n\nPlease check the screenshot here: https://raw.githubusercontent.com/afgprogrammer/Flutter-food-delivery-app-ui/master/assets/screenshot/two.png",
+    "expected_output": "Severity-grouped review with findings referencing specific UI elements visible in the screenshot (e.g., tap targets, text contrast, empty states). Top-fixes section with 3-5 ranked items. Step headers Step 1/5 through Step 5/5 present. No finding uses the phrase 'looks good'.",
+    "actual_output": "Emitted Step 1/5 through Step 5/5 headers in order. Scope check: in-scope. Screenshot confirmed as restaurant listing screen with 'Food Delivery' header, category filter chips (Pizza, Burgers, Keb[abs] truncated), Vegetarian Pizza card at $13.00, heart icon, basket icon. Four audit passes run. Severity-grouped review produced: BLOCKER (4 findings: card shows food item not restaurant entity preventing selection decision; single card per viewport incompatible with sub-10-second scan goal; white text on unscrimmed hero image fails contrast; no loading state). MAJOR (8 findings: active filter chip fails contrast ~2.5:1; no offline state; no error state for fetch failure; no zero-state for empty category; category chip row truncates with no overflow affordance; no location context in header; no search field; location permission state unspecified). MINOR (5 findings: heart/basket icons likely undersized <48dp; no clear-filter chip; no image skeleton; long name truncation unspecified; no back affordance). NIT (3 findings: Food Delivery heading generic; truncated chip announced as 'Keb' by TalkBack; currency overflow unaddressed). Top Fixes: 5 items — (1) replace food-item card with restaurant card, (2) increase listing density to 3+ cards above fold, (3) add gradient scrim and fix active chip contrast, (4) loading skeleton and offline state, (5) persistent search field and full category filter row.",
+    "assertions": [
+      {
+        "text": "Output contains 'Step 1/5' through 'Step 5/5' headers in order",
+        "passed": true,
+        "evidence": "\"Emitted Step 1/5 through Step 5/5 headers in order.\"",
+        "human_review": false
+      },
+      {
+        "text": "Output includes a section headed 'Blocker' or 'BLOCKER' with at least one finding",
+        "passed": true,
+        "evidence": "\"BLOCKER (4 findings: card shows food item not restaurant entity preventing selection decision; single card per viewport incompatible with sub-10-second scan goal; white text on unscrimmed hero image fails contrast; no loading state)\"",
+        "human_review": false
+      },
+      {
+        "text": "Output includes a finding about contrast or tap target size referencing a specific UI element",
+        "passed": true,
+        "evidence": "\"white text on unscrimmed hero image fails contrast\" (Blocker); \"active filter chip fails contrast ~2.5:1\" (Major); \"heart/basket icons likely undersized <48dp\" (Minor).",
+        "human_review": false
+      },
+      {
+        "text": "Output includes a Top Fixes section with 3-5 ranked items",
+        "passed": true,
+        "evidence": "\"Top Fixes: 5 items — (1) replace food-item card with restaurant card, (2) increase listing density to 3+ cards above fold, (3) add gradient scrim and fix active chip contrast, (4) loading skeleton and offline state, (5) persistent search field and full category filter row.\"",
+        "human_review": false
+      },
+      {
+        "text": "Output does not contain the phrase 'looks good'",
+        "passed": true,
+        "evidence": "The phrase 'looks good' does not appear anywhere in the actual_output.",
+        "human_review": false
+      }
+    ],
+    "verdict": "pass",
+    "timing": {
+      "total_tokens": 30846,
+      "duration_ms": 207664
+    }
+  },
+  {
+    "id": 3,
+    "prompt": "critique this flow — I want you to do a design review on the third screen of our food delivery app. PRD context: This is the order confirmation / checkout summary screen. The user has selected items and is reviewing their order before placing it. User goal: confirm order details and place order with confidence. Audience: first-time users on iOS, unfamiliar with the app. Success metric: order placement without support contact.\n\nImage: https://raw.githubusercontent.com/afgprogrammer/Flutter-food-delivery-app-ui/master/assets/screenshot/three.png",
+    "expected_output": "Severity-bucketed findings covering at least error states (what happens if payment fails), edge cases (zero items, maximum items), and accessibility (contrast, tap targets). Top-fixes list with at least 3 entries. Step 1/5 through Step 5/5 headers emitted. Each finding states broken state and user consequence in one sentence.",
+    "actual_output": "Emitted Step 1/5 through Step 5/5 headers in order. Scope check: in-scope. Image confirmed as food browse/menu listing screen (not checkout screen — three.png shows 'Food Delivery' header, Kebab/Dessert/Salad chips, Vegetarian Pizza card at $13.00). Critical pre-audit flag emitted: PRD describes checkout screen but actual image is a browse listing screen. Four audit passes run against the actual screen. Severity-grouped review produced: BLOCKER (3 findings: screen does not match PRD intent — no checkout path exists; no loading state on menu fetch; white text on uncontrolled photo fails contrast). MAJOR (6 findings: no active state on category chips; basket icon has no count badge; no back navigation; chip scroll not afforded; no offline state; no zero-state for empty category). MINOR (5 findings: heart icon no toggled state; single card fills viewport; image-load failure undesigned; long name overflow unspecified; no first-time user onboarding hint). NIT (3 items). Top Fixes: 5 items — (1) resolve screen routing/PRD labelling error, (2) scrim behind price/name text, (3) loading skeleton, (4) active chip state and basket badge, (5) all missing error states.",
+    "assertions": [
+      {
+        "text": "Output contains 'Step 1/5' through 'Step 5/5' headers in order",
+        "passed": true,
+        "evidence": "\"Emitted Step 1/5 through Step 5/5 headers in order.\"",
+        "human_review": false
+      },
+      {
+        "text": "Output includes at least one finding from the error-state taxonomy (loading, error, offline, empty, permission)",
+        "passed": true,
+        "evidence": "\"no loading state on menu fetch\" (Blocker); \"no offline state\" (Major); \"no zero-state for empty category\" (Major).",
+        "human_review": false
+      },
+      {
+        "text": "Output includes at least one WCAG or accessibility finding (contrast, tap target, or screen reader)",
+        "passed": true,
+        "evidence": "\"white text on uncontrolled photo fails contrast\" (Blocker).",
+        "human_review": false
+      },
+      {
+        "text": "Output includes a Top Fixes section with at least 3 entries",
+        "passed": true,
+        "evidence": "\"Top Fixes: 5 items — (1) resolve screen routing/PRD labelling error, (2) scrim behind price/name text, (3) loading skeleton, (4) active chip state and basket badge, (5) all missing error states.\"",
+        "human_review": false
+      },
+      {
+        "text": "Output flags the mismatch between the PRD (checkout screen) and the actual image (browse screen)",
+        "passed": true,
+        "evidence": "\"Critical pre-audit flag emitted: PRD describes checkout screen but actual image is a browse listing screen.\" and \"BLOCKER (3 findings: screen does not match PRD intent — no checkout path exists; ...)\"",
+        "human_review": false
+      }
+    ],
+    "verdict": "pass",
+    "timing": {
+      "total_tokens": 33042,
+      "duration_ms": 373952
+    }
+  },
+  {
+    "id": 4,
+    "prompt": "Look at this mockup and tell me what's wrong with it from a UX perspective. Here's the product brief: We are building a food ordering app. This screen is the home feed. The primary CTA is to browse and order food. Users are on mobile (iOS and Android). We want users to complete their first order in under 3 minutes. We have no offline state currently designed.\n\nScreenshot URL: https://raw.githubusercontent.com/afgprogrammer/Flutter-food-delivery-app-ui/master/assets/screenshot/one.png",
+    "expected_output": "Scope check passes (in-scope UX request). Review identifies at least one gap from error-state taxonomy (specifically: offline/loading/empty states missing). At least one WCAG finding (contrast or tap target). Top fixes prioritise by user impact. Step 1/5 through Step 5/5 headers present. Refusal templates NOT invoked since request is in-scope.",
+    "actual_output": "Emitted Step 1/5 through Step 5/5 headers in order. Scope check: in-scope (not rejected). No refusal template invoked. Four audit passes run. Error-state taxonomy gaps identified: Empty (no zero-state for no restaurants in range), Loading (no loading indicator after Start tap), Error (no API/location error state), Offline (PRD-confirmed gap — no indicator, no fallback), Permission (no pre-rationale, no denied state). WCAG findings: white headline text fails contrast over bright image patches (SC 1.4.3); Start VoiceOver label 'Start, button' non-descriptive (SC 4.1.2). Severity-grouped review: BLOCKER (4 findings: no loading state; no offline state; no location-denied recovery; no API error state). MAJOR (7 findings: Start CTA content-free; no restaurant content before commitment; no zero-data state; white text contrast fails; subheadline illegible; no pre-permission rationale; no session continuity for returning users). MINOR (5 findings). NIT (2 findings). Top Fixes: 5 items ranked by user impact — (1) all four error states for Start tap, (2) surface restaurant content before commitment, (3) fix CTA label and add pre-permission rationale, (4) headline contrast fix, (5) session continuity for returning users.",
+    "assertions": [
+      {
+        "text": "Output contains 'Step 1/5' through 'Step 5/5' headers in order",
+        "passed": true,
+        "evidence": "\"Emitted Step 1/5 through Step 5/5 headers in order.\"",
+        "human_review": false
+      },
+      {
+        "text": "Output does not invoke a refusal template — scope_decision is in-scope",
+        "passed": true,
+        "evidence": "\"Scope check: in-scope (not rejected). No refusal template invoked.\"",
+        "human_review": false
+      },
+      {
+        "text": "Output names at least one of: offline state, loading state, or empty state as a missing error state",
+        "passed": true,
+        "evidence": "\"Error-state taxonomy gaps identified: Empty (no zero-state for no restaurants in range), Loading (no loading indicator after Start tap), Error (no API/location error state), Offline (PRD-confirmed gap — no indicator, no fallback), Permission (no pre-rationale, no denied state).\"",
+        "human_review": false
+      },
+      {
+        "text": "Output includes at least one WCAG finding naming contrast (SC 1.4.3) or tap target size",
+        "passed": true,
+        "evidence": "\"WCAG findings: white headline text fails contrast over bright image patches (SC 1.4.3)\"",
+        "human_review": false
+      },
+      {
+        "text": "Top Fixes section is present and items are described as ranked by user impact",
+        "passed": true,
+        "evidence": "\"Top Fixes: 5 items ranked by user impact — (1) all four error states for Start tap, (2) surface restaurant content before commitment, (3) fix CTA label and add pre-permission rationale, (4) headline contrast fix, (5) session continuity for returning users.\"",
+        "human_review": false
+      }
+    ],
+    "verdict": "pass",
+    "timing": {
+      "total_tokens": 29551,
+      "duration_ms": 173009
+    }
+  }
+]
