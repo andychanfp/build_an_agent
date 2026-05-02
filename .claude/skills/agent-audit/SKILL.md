@@ -94,7 +94,7 @@ Run subagents in two waves respecting dependencies. In each wave, spawn all sele
 
 *Wave 1 (independent — no dependencies):*
 - If `lint` selected → invoke `agent-audit-lint` with `skill_path`, `run_dir`, `run_number`, `audit_registry_path = .claude/skills/agent-audit/refs/audit-registry.md`, `audit_template_path = .claude/skills/agent-audit/refs/audit-template.json`
-- If `optimise` selected → invoke `agent-audit-optimiser` with `skill_path`, `run_dir`, `run_number`, `skill_name`
+- If `optimise` selected → invoke `agent-audit-optimise` with `skill_path`, `run_dir`, `run_number`, `skill_name`
 - If `test` selected → invoke `agent-audit-test` with `skill_path`, `run_dir`, `schemas_path = <skill_path>/refs/schemas.json`, `mode = comprehensive`
 
 Emit status as each Wave 1 agent completes: `✓ Test complete` / `✓ Lint complete` / `✓ Optimise complete` (or `⚠ <agent> failed — see report`).
@@ -122,7 +122,7 @@ pass_rate: X%  |  total_assertions: N  |  human_review_pending: M
 ### Lint  (from agent-audit-lint)
 <table: severity | rule | location | finding — P0 first, max 3 per severity>
 
-### Optimise  (from agent-audit-optimiser)
+### Optimise  (from agent-audit-optimise)
 improved: yes/no  |  val_pass_rate: X%  |  iterations: N
 
 ### Benchmark  (from agent-audit-benchmark)

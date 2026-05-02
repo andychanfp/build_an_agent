@@ -1,6 +1,6 @@
 ---
 name: Language
-description: Voice, tone, and terminology rules for all prose agent-builder writes into SKILL.md and ref files
+description: Voice, tone, and terminology rules for all prose agent-build writes into SKILL.md and ref files
 type: reference
 ---
 
