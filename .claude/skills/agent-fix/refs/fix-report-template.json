@@ -1,0 +1,53 @@
+{
+  "$schema_doc": "Fix report template written to <run_dir>/fix-report-[n].json by agent-fix Step 7. Records every fix attempted in a run: what was approved, what was applied, what failed, and what was skipped as ambiguous. Use to compare across audit runs and track repair history.",
+  "skill_name": "<target-skill-name>",
+  "run_number": 0,
+  "run_dir": "<skill_path>/run/run-[n]/",
+  "fixed_at": "<ISO-8601 timestamp>",
+  "fixes_attempted": 0,
+  "fixes_applied": [
+    {
+      "fix_id": "F1",
+      "finding_ids": ["<finding-id-1>", "<finding-id-2>"],
+      "severity": "P0",
+      "source": "<grading | lint | safety | feedback | quality>",
+      "section": "<SKILL.md section name, e.g. '## Step 4/5' or 'frontmatter'>",
+      "action_taken": "<one-line description of what was changed>"
+    }
+  ],
+  "fixes_failed": [
+    {
+      "fix_id": "F2",
+      "finding_ids": ["<finding-id>"],
+      "severity": "P1",
+      "section": "<SKILL.md section name>",
+      "error": "<error message from the Edit or Write tool>"
+    }
+  ],
+  "ambiguous_flagged": [
+    {
+      "finding_id": "<finding-id>",
+      "source": "<grading | lint | safety | feedback | quality>",
+      "severity": "P1",
+      "description": "<one-line description of the finding>",
+      "reason": "<why the repair action could not be determined from the artifact alone>"
+    }
+  ],
+  "summary": {
+    "total_fixes_in_plan": 0,
+    "approved_by_user": 0,
+    "applied": 0,
+    "failed": 0,
+    "ambiguous_skipped": 0,
+    "p0_applied": 0,
+    "p0_failed": 0
+  },
+  "$field_rules": {
+    "fixes_applied": "One entry per Fix ID that was approved and successfully written. Include all merged findings in finding_ids.",
+    "fixes_failed": "One entry per Fix ID that was approved but failed during the Edit/Write step. Include the raw tool error.",
+    "ambiguous_flagged": "One entry per finding that was classified as ambiguous and skipped. Never include findings that were simply unapproved by the user — only truly ambiguous ones.",
+    "summary.approved_by_user": "Count of fixes the user approved (subset of total_fixes_in_plan). Excludes ambiguous_flagged.",
+    "summary.p0_applied": "Count of P0 severity fixes that were successfully applied. A run with p0_applied < p0_total is still at risk.",
+    "severity_values": "P0 = blocker (safety, repeated failed assertion), P1 = major (single failed assertion, lint error), P2 = minor (advisory, quality gap)"
+  }
+}
