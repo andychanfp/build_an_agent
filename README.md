@@ -4,6 +4,10 @@ Designing a good Claude skill is harder than it looks. You have to know what mak
 
 This repo turns that into a workflow. You describe the agent you want in plain English; the pipeline interviews you, drafts a plan, builds the skill, audits it, scores it against vanilla Opus, and patches whatever broke. Every step is a skill itself — chain them, or run any one on its own.
 
+## Example
+
+`design-review.md` is a dogfood product: it went through the workflow of `agent-plan` -> `agent-build` -> `agent-audit` -> `agent-fix`. Feel free to run the skill on your own!
+
 ## Install
 
 1. Clone the repo.
@@ -70,9 +74,5 @@ You can also drop in mid-chain. `/agent-evaluate` works on any existing skill. `
 - **Comprehensive** — exhaustive findings, plus lint, optimiser, and benchmark. For shipping.
 
 `agent-planner` has its own modes: **Thinking** (default, full 8-MCQ interview) or **Flash** (3 MCQs, smart defaults for the rest).
-
-## Make it your own
-
-Every skill is a plain file under `.claude/skills/<name>/`. Edit `SKILL.md` to change behaviour, edit the refs to change the rules. To add or swap an audit subagent, drop it in and update the dispatch table in `agent-audit/SKILL.md` Step 4 — the orchestrators don't care what's behind the name as long as the input/output contract holds.
 
 For dataflow, concurrency model, and per-subagent contracts, see `ARCHITECTURE.md`.
