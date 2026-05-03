@@ -1,21 +1,21 @@
 ---
-name: agent-planner
-description: Plan a specialist AI agent before building. Outputs a plan for agent-builder to consume. Use when the user wants to design or plan an agent, even if they don't explicitly say "skill" or "prompt". Invoked via "/agent-planner" or naturally via phrases like "plan an agent", "design a custom Claude", "think through a specialist prompt", "start a new agent".
+name: agent-plan
+description: Plan a specialist AI agent before building. Outputs a plan for agent-build to consume. Use when the user wants to design or plan an agent, even if they don't explicitly say "skill" or "prompt". Invoked via "/agent-plan" or naturally via phrases like "plan an agent", "design a custom Claude", "think through a specialist prompt", "start a new agent".
 model: claude-sonnet-4-6
 
 ---
 
-# agent-planner
+# agent-plan
 
 ## Usage
 
-**Invoke**: `/agent-planner <optional one-line ask>`
+**Invoke**: `/agent-plan <optional one-line ask>`
 
 **Modes**:
 - `mode: thinking` (default) — up to 8 MCQs, full coverage.
 - `mode: flash` — 3 MCQs, smart defaults for the rest.
 
-**What you get**: a captured spec, a written summary, two test prompts with expected and actual outputs, and a final plan in `plan-template.md` format ready for `agent-builder`.
+**What you get**: a captured spec, a written summary, two test prompts with expected and actual outputs, and a final plan in `plan-template.md` format ready for `agent-build`.
 
 **Human checkpoints**: approval is requested inline after the workflow is drawn (covering summary, priorities, and workflow), and again inside Step 6 before the test prompts are executed. Either checkpoint can revise or abort.
 
@@ -37,7 +37,7 @@ model: claude-sonnet-4-6
 | priorities | P0–P2 feature table | shown inline at Step 5 |
 | workflow | ASCII diagram per `refs/workflow-template.md` | shown inline at Step 5 |
 | test prompts | 2 prompt/expected/actual triples | shown inline at Step 6 |
-| plan | structured doc per `refs/plan-template.md` | handed to `agent-builder` |
+| plan | structured doc per `refs/plan-template.md` | handed to `agent-build` |
 
 ## Model loading
 
@@ -112,7 +112,7 @@ After presenting both pairs, request approval inline before executing — the ru
 Never run the prompts before receiving `approve & run`.
 
 **Step 7 — Emit the plan** `[model: sonnet]`
-Render the captured spec into `refs/plan-template.md` structure. Include the approved summary, approved priority table, approved workflow diagram, and the approved test pairs with their prompts, expected outputs, and actual outputs. Write the result directly to `plans/<spec.name>.md` using the Write tool — do not ask for approval, do not preview the file, do not request a filename. If a file at that path already exists, overwrite it. After writing, emit one line with the absolute path of the written file, then hand off to `agent-builder`.
+Render the captured spec into `refs/plan-template.md` structure. Include the approved summary, approved priority table, approved workflow diagram, and the approved test pairs with their prompts, expected outputs, and actual outputs. Write the result directly to `plans/<spec.name>.md` using the Write tool — do not ask for approval, do not preview the file, do not request a filename. If a file at that path already exists, overwrite it. After writing, emit one line with the absolute path of the written file, then hand off to `agent-build`.
 
 ## Caching
 

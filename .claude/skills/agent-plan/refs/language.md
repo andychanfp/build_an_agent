@@ -1,6 +1,6 @@
 ---
 name: Language
-description: Voice, tone, and terminology rules for plan documents produced by the agent-planner
+description: Voice, tone, and terminology rules for plan documents produced by the agent-plan
 type: reference
 ---
 

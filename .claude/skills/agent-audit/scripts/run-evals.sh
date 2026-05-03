@@ -1,5 +1,5 @@
 #!/bin/bash
-# run-evals.sh — drives `claude -p` for the description optimizer's trigger-rate measurement.
+# run-evals.sh — drives `claude -p` for the description optimiser's trigger-rate measurement.
 #
 # Usage: run-evals.sh <queries.json> <skill_name> [runs_per_query]
 #
@@ -10,7 +10,7 @@
 #   { "query": "...", "should_trigger": bool, "triggers": int, "runs": int, "trigger_rate": float }
 #
 # A query passes if (should_trigger && trigger_rate > 0.5) || (!should_trigger && trigger_rate <= 0.5).
-# The optimizer aggregates pass rates across train and validation sets.
+# The optimiser aggregates pass rates across train and validation sets.
 
 set -euo pipefail
 

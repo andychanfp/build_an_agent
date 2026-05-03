@@ -1,14 +1,14 @@
 ---
-name: agent-builder
-description: Builds a runnable skill from a plan produced by agent-planner. Writes SKILL.md and all named ref files to .claude/skills/<name>/. Use when handed a plan path, or when the user says "build this", "generate the skill", or "create the agent".
+name: agent-build
+description: Builds a runnable skill from a plan produced by agent-plan. Writes SKILL.md and all named ref files to .claude/skills/<name>/. Use when handed a plan path, or when the user says "build this", "generate the skill", or "create the agent".
 model: claude-opus-4-7
 ---
 
-# agent-builder
+# agent-build
 
 ## Usage
 
-**Invoke**: `/agent-builder <plan-path>` or handed a plan path directly from `agent-planner`.
+**Invoke**: `/agent-build <plan-path>` or handed a plan path directly from `agent-plan`.
 
 If no plan path is given, list `plans/` and ask the user to confirm which plan to build before proceeding.
 
@@ -16,7 +16,7 @@ If no plan path is given, list `plans/` and ask the user to confirm which plan t
 
 | Name | Format | Source |
 |------|--------|--------|
-| plan | markdown per agent-planner plan-template | `plans/<name>.md` |
+| plan | markdown per agent-plan plan-template | `plans/<name>.md` |
 
 ## Outputs
 

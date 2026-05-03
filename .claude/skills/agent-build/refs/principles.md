@@ -1,6 +1,6 @@
 ---
 name: Principles
-description: Quality gates applied to every file agent-builder writes — SKILL.md and all ref files
+description: Quality gates applied to every file agent-build writes — SKILL.md and all ref files
 type: reference
 ---
 

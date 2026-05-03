@@ -40,7 +40,7 @@
       "consequence": "<what could break for the user>"
     }
   ],
-  "description_optimizer": {
+  "description_optimiser": {
     "iterations_run": 0,
     "max_iterations": 5,
     "train_set_size": 12,

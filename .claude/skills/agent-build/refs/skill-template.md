@@ -1,6 +1,6 @@
 ---
 name: Skill Template
-description: Required structure and section order for every SKILL.md file produced by agent-builder
+description: Required structure and section order for every SKILL.md file produced by agent-build
 type: reference
 ---
 

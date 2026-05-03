@@ -1,6 +1,6 @@
 ---
 name: Protocol
-description: Step-by-step build protocol for agent-builder — validates a plan then writes SKILL.md and all ref files
+description: Step-by-step build protocol for agent-build — validates a plan then writes SKILL.md and all ref files
 type: reference
 ---
 
