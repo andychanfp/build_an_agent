@@ -20,6 +20,9 @@ YAML frontmatter for the generated SKILL.md.
 - `description`: one line, ~80 words or fewer, covers what the skill does
   and when to consult it
 - `type`: skill type if applicable
+- `output_dir` (optional): absolute path chosen by the user in agent-plan Step 7.
+  Omit this field for Global installs. When present, agent-build writes all skill
+  files under this directory instead of `.claude/skills/<name>/`.
 
 ## 2. Trigger conditions (required)
 

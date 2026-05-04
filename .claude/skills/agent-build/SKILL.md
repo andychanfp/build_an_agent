@@ -51,12 +51,15 @@ Do not write any files.
 
 **Step 2/5 — Scaffold directories**
 
-Extract `<name>` from plan §1 YAML `name` field.
+Extract `<name>` from plan §1 YAML `name` field. Check for `output_dir` in plan §1:
+
+- **`output_dir` is set** (Desktop or Custom install): `skill_root = <output_dir>`
+- **`output_dir` is absent** (Global install): `skill_root = .claude/skills/<name>`
 
 Run via Bash:
 
 ```bash
-mkdir -p .claude/skills/<name>/refs
+mkdir -p <skill_root>/refs
 ```
 
 Do not prompt. If the directory already exists, continue.
@@ -82,11 +85,11 @@ Follow `refs/skill-template.md` for section order and formatting.
 
 Apply `refs/principles.md` quality gates before writing.
 
-Write to `.claude/skills/<name>/SKILL.md`. Do not prompt.
+Write to `<skill_root>/SKILL.md`. Do not prompt.
 
 **Step 4/5 — Write ref files**
 
-For each entry in plan §6, write one file to `.claude/skills/<name>/refs/<filename>`.
+For each entry in plan §6, write one file to `<skill_root>/refs/<filename>`.
 
 Frontmatter format (required on every ref):
 
@@ -122,7 +125,7 @@ For each file written, read it back and check it against `refs/principles.md`. I
 Emit a build report:
 
 ```
-Build complete: .claude/skills/<name>/
+Build complete: <skill_root>/
   SKILL.md              <N> lines
   refs/<file1>.md       <N> lines
   refs/<file2>.md       <N> lines

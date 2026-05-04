@@ -55,7 +55,7 @@ The recommended model is tagged on each step below as `[model: …]`. The orches
 
 At the start of every step, emit one line to the user:
 
-> `Step X/7 — <step title>`
+> `Step X/8 — <step title>`
 
 Emit it unconditionally, including for steps that produce no other user-visible output. If a step is skipped (e.g. the opening interview question when an `ask` is set), emit the marker with `(skipped)` appended.
 
@@ -111,8 +111,27 @@ After presenting both pairs, request approval inline before executing — the ru
 
 Never run the prompts before receiving `approve & run`.
 
-**Step 7 — Emit the plan** `[model: sonnet]`
-Render the captured spec into `refs/plan-template.md` structure. Include the approved summary, approved priority table, approved workflow diagram, and the approved test pairs with their prompts, expected outputs, and actual outputs. Write the result directly to `plans/<spec.name>.md` using the Write tool — do not ask for approval, do not preview the file, do not request a filename. If a file at that path already exists, overwrite it. After writing, emit one line with the absolute path of the written file, then hand off to `agent-build`.
+**Step 7 — Where should I save this?** `[model: haiku]`
+Ask the user where to save the plan and skill files:
+
+> "Where should I save the plan and skill files?
+> (1) Global — hidden `.claude` folder (default)
+> (2) Desktop — creates a folder named after the agent on your Desktop
+> (3) Custom folder — you name it"
+
+- `1` / `Global` → set `output_dir = null` (use default paths)
+- `2` / `Desktop` → set `output_dir = ~/Desktop/<spec.name>/`
+- `3` / `Custom` → ask: "What should the folder be named?" then set `output_dir = ~/Desktop/<folder-name>/`
+
+Store `output_dir` in spec. If `output_dir` is set, run `mkdir -p <output_dir>` via Bash before proceeding. Proceed to Step 8.
+
+**Step 8 — Emit the plan** `[model: sonnet]`
+Render the captured spec into `refs/plan-template.md` structure. Include the approved summary, approved priority table, approved workflow diagram, the approved test pairs with their prompts, expected outputs, and actual outputs, and `output_dir` (null if Global). Determine the plan file path:
+
+- **Global** (`output_dir` is null): write to `plans/<spec.name>.md`
+- **Desktop / Custom** (`output_dir` is set): write to `<output_dir>/<spec.name>-plan.md`
+
+Write the result using the Write tool — do not ask for approval, do not preview the file, do not request a filename. If a file at that path already exists, overwrite it. After writing, emit one line with the absolute path of the written file, then hand off to `agent-build`.
 
 ## Caching
 
