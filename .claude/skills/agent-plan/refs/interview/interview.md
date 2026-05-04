@@ -1,6 +1,6 @@
 ---
 name: Interview
-description: MCQ-driven question protocol the agent-planner uses to extract a complete, specialised agent specification in 8 questions or fewer
+description: MCQ-driven question protocol the agent-plan uses to extract a complete, specialised agent specification in 8 questions or fewer
 type: reference
 ---
 

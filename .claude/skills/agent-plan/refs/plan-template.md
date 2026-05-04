@@ -1,6 +1,6 @@
 ---
 name: Plan Template
-description: Required structure for plan documents consumed by the agent-builder
+description: Required structure for plan documents consumed by the agent-build
 type: reference
 ---
 

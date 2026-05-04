@@ -1,6 +1,6 @@
 ---
 name: agent-evaluate
-description: Orchestrator that evaluates a built skill by running agent-audit, agent-quality, or both. Asks the user which agents to run and which mode (flash or comprehensive). Use when the user says "evaluate this agent", "run evaluation on", or invokes /agent-evaluate after agent-builder completes.
+description: Orchestrator that evaluates a built skill by running agent-audit, agent-quality, or both. Asks the user which agents to run and which mode (flash or comprehensive). Use when the user says "evaluate this agent", "run evaluation on", or invokes /agent-evaluate after agent-build completes.
 model: claude-sonnet-4-6
 ---
 
@@ -10,13 +10,13 @@ model: claude-sonnet-4-6
 
 - Slash command `/agent-evaluate`
 - Natural-language: "evaluate this agent", "run evaluation on", "check this skill", "audit and quality check"
-- Context: handed off automatically after `agent-builder` emits "Ready for /agent-evaluate"
+- Context: handed off automatically after `agent-build` emits "Ready for /agent-evaluate"
 
 ## Inputs
 
 | Name | Format | Source |
 |------|--------|--------|
-| skill_name | directory name under `.claude/skills/` | args or prior agent-builder context |
+| skill_name | directory name under `.claude/skills/` | args or prior agent-build context |
 
 ## Outputs
 
@@ -42,7 +42,7 @@ Emit `Step X/5 — <title>` at the start of each step, unconditionally.
 ## Step-by-step protocol
 
 **Step 1/5 — Resolve skill path**
-Read `skill_name` from args. If absent, check prior context for a skill name emitted by `agent-builder`. If still absent, ask once: "Which skill should I evaluate? Pass the name matching `.claude/skills/<name>/`." Verify `.claude/skills/<skill_name>/SKILL.md` exists. If missing, emit: `Cannot evaluate: .claude/skills/<skill_name>/SKILL.md not found.` End the run. Produce `skill_path = .claude/skills/<skill_name>/`.
+Read `skill_name` from args. If absent, check prior context for a skill name emitted by `agent-build`. If still absent, ask once: "Which skill should I evaluate? Pass the name matching `.claude/skills/<name>/`." Verify `.claude/skills/<skill_name>/SKILL.md` exists. If missing, emit: `Cannot evaluate: .claude/skills/<skill_name>/SKILL.md not found.` End the run. Produce `skill_path = .claude/skills/<skill_name>/`.
 
 **Step 2/5 — Select agents**
 Ask the user:
