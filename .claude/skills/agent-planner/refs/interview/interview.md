@@ -57,7 +57,7 @@ Fill this table from the answers. No prose, no extra fields.
 |-------|--------|----------|
 | name | derived from ask | yes |
 | description | one line, ≤80 chars | yes |
-| persona | Q1 + Q7 | yes |
+| persona | Q1 + Q7 | conditional — see detection rule below |
 | triggers | Q2 | yes |
 | inputs | Q3 | yes |
 | outputs | Q4 | yes |
@@ -67,6 +67,19 @@ Fill this table from the answers. No prose, no extra fields.
 | dependencies | Q8 | yes |
 | refs | Q8 + derived | optional |
 | scripts | Q8 + derived | optional |
+
+### Persona detection rule
+
+Include a persona only when the agent embodies a specialist human role. Leave the field blank otherwise — do not invent a role to fill it.
+
+**Include persona when:**
+- The user names a specific role (e.g. "product manager", "senior engineer", "UX researcher")
+- Q1 + Q7 together point to a domain expert whose role-specific judgment shapes every output
+
+**Omit persona when:**
+- The agent is task-oriented: classification, summarisation, extraction, routing, validation, translation
+- No specific human role is implied by the ask or the interview answers
+- The required expertise is tool/framework knowledge rather than role-specific judgment
 
 Hand off to the plan generator when every required row is filled and no signal flags are open.
 

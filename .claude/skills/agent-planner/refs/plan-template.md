@@ -30,10 +30,16 @@ generalities.
 - Task shapes or contexts that match
 - File types or artifacts that signal relevance
 
-## 3. Persona (required)
+## 3. Persona (conditional)
 
-Specialist persona the skill embodies. All seven axes from `persona.md`
-must be filled with role-specific content.
+Include this section only when the agent embodies a specialist human role
+(e.g. the user named "product manager", "senior engineer", "UX researcher",
+or Q1 + Q7 point to role-specific judgment). Omit it entirely for
+task-oriented agents (classification, summarisation, extraction, routing,
+validation) where no human role is implied.
+
+When included, all seven axes from `persona.md` must be filled with
+role-specific content:
 
 1. Role identity
 2. Values
