@@ -25,14 +25,14 @@ Introducing `Skillsmith`, a comprehensive workflow do it for you at really low t
 ### Option 1 — Homebrew (macOS)
 
 ```bash
-brew install andychanfp/build-an-agent/build-an-agent
+brew install andychanfp/skillsmith/skillsmith
 ```
 
-Skills install automatically and are available globally. To update to the latest version: `brew upgrade build-an-agent`.
+Skills install automatically and are available globally. To update to the latest version: `brew upgrade skillsmith`.
 
 ### Option 2 — Install script
 ```bash
-curl -fsSL https://raw.githubusercontent.com/andychanfp/build_an_agent/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/andychanfp/skillsmith/main/install.sh | bash
 ```
 
 Installs all skills into `~/.claude/skills/` — available globally in every Claude Code session, no repo clone needed. Run the same command to update.
@@ -40,7 +40,7 @@ Installs all skills into `~/.claude/skills/` — available globally in every Cla
 ### Option 3 — Clone the repo
 
 ```bash
-git clone --branch main --single-branch https://github.com/andychanfp/build_an_agent.git && cd ~/build_an_agent
+git clone --branch main --single-branch https://github.com/andychanfp/skillsmith.git && cd ~/skillsmith
 ```
 
 Clones main branch of the repo and enters the folder automatically. Skills under `.claude/skills/` register automatically — nothing to configure. 
@@ -50,7 +50,7 @@ Clones main branch of the repo and enters the folder automatically. Skills under
 
 --
 
-`build_an_agent` is a linked chain: you can run tools independently, or run them as one single process. Each skill feeds into the next. 
+`skillsmith` is a linked chain: you can run tools independently, or run them as one single process. Each skill feeds into the next. 
 
 ### Processes
 There are several options (non-exhaustive) on how you can build your agent or skill.

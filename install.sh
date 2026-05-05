@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="andychanfp/build_an_agent"
+REPO="andychanfp/skillsmith"
 BRANCH="main"
 TARBALL_URL="${TARBALL_URL:-https://github.com/${REPO}/archive/refs/heads/${BRANCH}.tar.gz}"
 SKILLS_DEST="${HOME}/.claude/skills"
@@ -40,14 +40,14 @@ command -v curl >/dev/null 2>&1 || die "curl is required but not found"
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "${TMP_DIR}"' EXIT
 
-bold "Downloading build_an_agent..."
+bold "Downloading skillsmith..."
 curl -fsSL "${TARBALL_URL}" -o "${TMP_DIR}/repo.tar.gz" \
   || die "Download failed. Check your internet connection and try again."
 
 tar -xzf "${TMP_DIR}/repo.tar.gz" -C "${TMP_DIR}" \
   || die "Failed to extract download. The file may be corrupt — try again."
-REPO_DIR="${TMP_DIR}/build_an_agent-${BRANCH}"
-[[ -d "${REPO_DIR}" ]] || die "Unexpected archive layout (expected build_an_agent-${BRANCH}/). Please report this at https://github.com/${REPO}/issues"
+REPO_DIR="${TMP_DIR}/skillsmith-${BRANCH}"
+[[ -d "${REPO_DIR}" ]] || die "Unexpected archive layout (expected skillsmith-${BRANCH}/). Please report this at https://github.com/${REPO}/issues"
 
 # ── Install ───────────────────────────────────────────────────────────────────
 

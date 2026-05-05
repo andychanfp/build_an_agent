@@ -1,6 +1,6 @@
 # Architecture
 
-Technical reference for the build-an-agent pipeline. Each skill is described by its inputs, outputs, model assignment, internal protocol, and dependency contract. The pipeline composes through file artifacts on disk — every subagent reads structured input from a known path and writes structured output to a known path, so subagents are independently testable and replaceable.
+Technical reference for the skillsmith pipeline. Each skill is described by its inputs, outputs, model assignment, internal protocol, and dependency contract. The pipeline composes through file artifacts on disk — every subagent reads structured input from a known path and writes structured output to a known path, so subagents are independently testable and replaceable.
 
 ## High-level dataflow
 
