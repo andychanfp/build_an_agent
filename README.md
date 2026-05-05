@@ -18,7 +18,15 @@ curl -fsSL https://raw.githubusercontent.com/andychanfp/build_an_agent/main/inst
 
 Installs all 11 skills into `~/.claude/skills/` — available globally in every Claude Code session, no repo clone needed. To update to the latest version, re-run the same command.
 
-### Option 2 — Clone the repo
+### Option 2 — Homebrew (macOS)
+
+```bash
+brew install andychanfp/build-an-agent/build-an-agent
+```
+
+Skills install automatically and are available globally. To update to the latest version: `brew upgrade build-an-agent`.
+
+### Option 3 — Clone the repo
 
 ```bash
 git clone https://github.com/andychanfp/build_an_agent.git
