@@ -1,24 +1,26 @@
+<div align="center">
+
 # Build-an-Agent
+>> ### __Agent this, agent that. Can I have an agent to build my agent?__
 
-Designing a good Claude skill is harder than it looks. You have to know what makes a description trigger reliably, how to write a persona that actually shapes behaviour, which protocol steps the model will follow versus quietly skip, and how to tell whether the thing you built is any better than just asking Opus directly. Most people give up halfway and end up with a folder of half-working prompts.
+**Yes, you can. Here it is.**
 
-This repo turns that into a workflow. You describe the agent you want in plain English; the pipeline interviews you, drafts a plan, builds the skill, audits it, scores it against vanilla Opus, and patches whatever broke. Every step is a skill itself — chain them, or run any one on its own.
+A good Claude skill takes more than just some prompts. What about making sure it doesn't cost so much to run? What about making sure it doesn't do anything funny? What if it's actually worse than just running your task in Claude Opus? 
 
-## Example
+Skip all that and let this comprehensive workflow do it for you. You're always in control: you're building something for yourself after all!
 
-`design-review.md` is a dogfood product: it went through the workflow of `agent-plan` -> `agent-build` -> `agent-audit` -> `agent-fix`. Feel free to run the skill on your own!
+</div>
 
-## Install
 
-### Option 1 — Install script (recommended)
+## 💭 When should I use this?
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/andychanfp/build_an_agent/main/install.sh | bash
-```
+1. **Creating a specialist agent** (e.g. product analyst for impact estimation, product manager that looks into edge cases and interactions)
+2. **Creating simple agents for specific tasks** (e.g. PDF transformer, CSV file cleaner)
+3. **Auditing your own skills or agents** (e.g you built a skill but not sure what you can to improve it, other than asking the LLM for help)
 
-Installs all 11 skills into `~/.claude/skills/` — available globally in every Claude Code session, no repo clone needed. To update to the latest version, re-run the same command.
+## 🚀 Installation
 
-### Option 2 — Homebrew (macOS)
+### Option 1 — Homebrew (macOS)
 
 ```bash
 brew install andychanfp/build-an-agent/build-an-agent
@@ -26,77 +28,86 @@ brew install andychanfp/build-an-agent/build-an-agent
 
 Skills install automatically and are available globally. To update to the latest version: `brew upgrade build-an-agent`.
 
+### Option 2 — Install script
+```bash
+curl -fsSL https://raw.githubusercontent.com/andychanfp/build_an_agent/main/install.sh | bash
+```
+
+Installs all skills into `~/.claude/skills/` — available globally in every Claude Code session, no repo clone needed. Run the same command to update.
+
 ### Option 3 — Clone the repo
 
 ```bash
-git clone https://github.com/andychanfp/build_an_agent.git
+git clone --branch main --single-branch https://github.com/andychanfp/build_an_agent.git && cd ~/build_an_agent
 ```
 
-Open the cloned directory in Claude Code. Skills under `.claude/skills/` register automatically — nothing to configure. Use this if you want to browse the source, contribute, or run `design-review` as a worked example.
+Clones main branch of the repo and enters the folder automatically. Skills under `.claude/skills/` register automatically — nothing to configure. 
 
----
 
-Type `/help` or any slash command below to confirm all 11 skills loaded.
+## 💪🏼 Workflow
 
-**Optional** (only for `agent-audit-lint` and `agent-audit-optimise`): `node` + `npm` (auto-installs the `agentlinter` and `agnix` lint tools on first run), the `claude` CLI on your `PATH`, and `jq`. Missing tools get flagged as skipped findings — they never block a run.
+--
 
-## The happy path
+`build_an_agent` is a linked chain: you can run tools independently, or run them as one single process. Each skill feeds into the next. 
 
-```
-/agent-plan      →  plans/<name>.md
-/agent-build     →  .claude/skills/<name>/{SKILL.md, refs/*}
-/agent-evaluate  →  audit + quality artifacts in run/run-[n]/
-/agent-fix       →  patches SKILL.md and refs from those artifacts
-```
+### Processes
+There are several options (non-exhaustive) on how you can build your agent or skill.
 
-You can also drop in mid-chain. `/agent-evaluate` works on any existing skill. `/agent-audit` and `/agent-quality` work standalone. `/agent-fix` only needs an audit run to chew on.
+| Flow | Why |
+| --- | --- |
+| Run `/agent-plan` -> `/agent-build` -> `/agent-evaluate` -> `/agent-fix`  | Step-by-step process for comprehensiveness and robustness* |
+| Run `/agent-ship` | Runs a quick 4-step workflow to build your agent | 
+| Run `/agent-plan` and hand off to your own Claude chat, Codex, Gemini to build the agent skills | Ensure that at whichever LLM you're using is using a plan that's informed by the best practices
 
-## What's in the box
+*_You can run the evaluation and fix agents iteratively if you're rich enough in budget._
 
-### The pipeline
+### Example
+The `design-review` skill is shipped together with this repo as an example of dogfooding. It went through the workflow of:
 
-| Skill | Invocation | What it does |
-|-------|-----------|--------------|
-| `agent-plan` | `/agent-plan [ask]` | Interviews you with 3–8 MCQs, drafts a summary, persona, workflow, and two test prompts, and writes a structured plan to `plans/<name>.md`. |
-| `agent-build` | `/agent-build <plan-path>` | Validates the plan, scaffolds `.claude/skills/<name>/`, writes `SKILL.md` plus every ref file, hands off to evaluation. |
-| `agent-evaluate` | `/agent-evaluate <skill>` | Asks which checks to run (audit, quality, both) and which mode (flash or comprehensive), then dispatches them in parallel and merges the reports. |
-| `agent-fix` | `/agent-fix <skill>` | Reads every artifact in the latest run, ranks findings by severity, shows you a fix plan, and patches `SKILL.md` and refs in place once you approve. Ambiguous findings get flagged for human review instead of guessed at. |
+1. `agent-plan` to create a comprehensive plan
+2. `agent-build` to build the agent based on the plan
+3. `agent-evaluate` to evaluate the built agent and audit for issues
+4. `agent-fix` to fix the top three issues
 
-### Audit specialists
+## ⚒️ Tools
+There are 12 skills in total with 4 primary skills in the pipeline.
 
-`/agent-audit` is itself an orchestrator — pick any subset from its checklist.
+### Primaries
+| Skill | Invocation | What it does | Outcome |
+|-------|-----------|--------------|-------|
+| `agent-plan` | `/agent-plan [ask]` | **Start here.** Interviews you with 3–8 MCQs, drafts a summary, persona, workflow, and two test prompts, and writes a structured plan to `plans/<name>.md`. | What are you trying to build? |
+| `agent-build` | `/agent-build <plan-path>` | Validates the plan, scaffolds `.claude/skills/<name>/`, writes `SKILL.md` plus every ref file, hands off to evaluation. | Builds your agent |
+| `agent-evaluate` | `/agent-evaluate <skill>` | Asks you for the specific check and mode to run, then dispatches them in parallel and creates a report (`run-[n].md`). | Runs a series of checks to improve and patch agent
+| `agent-fix` | `/agent-fix <skill>` | Reads the audit run file, ranks findings by severity, shows you a fix plan, and patches `SKILL.md` and refs in place once you approve. Human approval always. | Fixes issues found
 
-| Skill | What it does |
-|-------|--------------|
-| `agent-audit-test` | Generates 3–5 test cases from the skill, runs them as parallel evals, writes verifiable assertions per case. → `evals-[n].json` |
-| `agent-audit-grade` | Grades every assertion: LLM judge for semantic checks, tool calls for mechanical ones, `human_review` flagged but never guessed. → `grading.json` |
-| `agent-audit-lint` | Runs `agentlinter` and `agnix`, then an LLM safety scan against the audit registry (destructive ops, secrets, code execution, prompt injection, shared-state mutation, network egress). → `audit-[n].json` |
-| `agent-audit-optimise` | Measures the skill's description trigger rate, iterates up to 5 times to improve it, validates the winner, writes it back if it actually wins. Up to 144 `claude -p` calls — token-heavy. |
-| `agent-audit-benchmark` | Aggregates token cost and timing — mean, stddev, pass rate. → `timing.json`, `benchmark.json` |
+### Evaluators
+Evaluator agents can be run independently or by `agent-evaluate` .
 
-### Quality check
 
-| Skill | What it does |
-|-------|--------------|
-| `agent-quality` | Runs the same task twice — once following your full SKILL.md, once with vanilla `claude-opus-4-7` given a plain-prose prompt. Scores three dimensions and tells you 🟢 skill is worth it, 🟡 marginal, or 🔴 just use Opus. |
+| Skill | What it does | Outcome |
+|-------|-----|----------------|
+| `agent-audit-test` | Generates 3–5 test cases from the skill, runs them as parallel evals, writes verifiable assertions per case. → `evals-[n].json` | Does the agent do what it's supposed to do?
+| `agent-audit-grade` | Grades every assertion: LLM judge for semantic checks, tool calls for mechanical ones, `human_review` flagged but never guessed. → `grading.json` | Does the agent or skill does what it's supposed to do _well_? |
+| `agent-audit-lint` | Runs `agentlinter` and `agnix`, then an LLM safety scan against the audit registry (destructive ops, secrets, code execution, prompt injection, shared-state mutation, network egress). → `audit-[n].json` | Does it do anything that it's not supposed to do? Does the tool measure against best practices and patterns? |
+| `agent-audit-optimise` | Measures the skill's description trigger rate, iterates up to 5 times to improve it, validates the winner, writes it back if it actually wins. Up to 144 `claude -p` calls — token-heavy. | Does the skill actually trigger when it's supposed to? |
+| `agent-audit-benchmark` | Aggregates token cost and timing — mean, stddev, pass rate. → `timing.json`, `benchmark.json` | Can it be cheaper to run the tool? |
+| `agent-quality` | Runs the same task twice — once following your full SKILL.md, once with vanilla `claude-opus-4-7` given a plain-prose prompt. Scores three dimensions and tells you 🟢 skill is worth it, 🟡 marginal, or 🔴 just use Opus. | Do you really need this agent though?
 
-### Worked example
-
-| Skill | What it does |
-|-------|--------------|
-| `design-review` | A senior product designer that audits UI screens against Nielsen, WCAG 2.2, error-state taxonomy, and an edge-case checklist. Included so you can see what an end-to-end built skill looks like. |
-
-## Where things land
-
+###  Where things land
+By default:
 - **Plans** → `plans/<skill>.md`
 - **Built skills** → `.claude/skills/<skill>/SKILL.md` + `refs/*`
 - **Audit runs** → `.claude/skills/<skill>/run/run-[n]/` — one directory per run, auto-incremented, holding every JSON artifact (`evals`, `grading`, `audit`, `timing`, `benchmark`, `feedback`, `quality`, `fix-report`)
 
-## Modes
-
-- **Flash** — top 3 findings per agent, P0 only. For fast triage.
-- **Comprehensive** — exhaustive findings, plus lint, optimiser, and benchmark. For shipping.
-
-`agent-plan` has its own modes: **Thinking** (default, full 8-MCQ interview) or **Flash** (3 MCQs, smart defaults for the rest).
+When planning and building, the skill will ask you where you would like output to be stored (global, desktop, or a new directory).
 
 For dataflow, concurrency model, and per-subagent contracts, see `ARCHITECTURE.md`.
+
+## ❓ FAQ
+
+1. **Why not use Claude's skill-creator skill?** This isn't a better version of it, but a different one that considers more non-technical folks that won't need (or want to understand) the data-driven, iterative loop.
+2. **Will the skill I create by really good?** It depends on your prompting and how much you collaborate with the skill. 
+3. **What are these "best practices" though?** Using an LLM-assisted flow, I combined [academic principles](https://jdforsythe.github.io/10-principles/overview/), [best practices](https://github.com/seojoonkim/agentlinter), [Claude's own recommendations](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf), and [agent skills foundations](https://leehanchung.github.io/blogs/2025/10/26/claude-skills-deep-dive/) to create a lightweight reference that this skill refers to. 
+4. **But does it really cover all the best practices?** Of course it does not, but I operate on the 80/20 principle. 
+5. **Can I contribute to this?** For now, no as I'm still in alpha testing. If you've got ideas, just shoot me a DM and let's chat.
+6. **Is this secure?** As far as possible, it only reads and writes in folders that you give access to and does not ask for more. In true dogfooding fashion, I also ran the `audit-lint` flow to ensure it doesn't do anything funny (e.g. prompt injections). If you spot anything, please shoot me a DM immediately. 
