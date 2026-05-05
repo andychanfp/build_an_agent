@@ -1,13 +1,15 @@
 <div align="center">
 
-# Build-an-Agent
->> ### __Agent this, agent that. Can I have an agent to build my agent?__
+<img src="assets/opener.jpg" width="400"/> 
 
-**Yes, you can. Here it is.**
+# 🔨 Skillsmith
+### __Skill this, agent that. Can I have an skill to build my agent?__
 
 A good Claude skill takes more than just some prompts. What about making sure it doesn't cost so much to run? What about making sure it doesn't do anything funny? What if it's actually worse than just running your task in Claude Opus? 
 
-Skip all that and let this comprehensive workflow do it for you. You're always in control: you're building something for yourself after all!
+_How can you build a skill in the shortest and cheapest way possible?_
+
+Introducing `Skillsmith`, a comprehensive workflow do it for you at really low token usage. You're always in control. 
 
 </div>
 
@@ -101,13 +103,18 @@ By default:
 
 When planning and building, the skill will ask you where you would like output to be stored (global, desktop, or a new directory).
 
+### Data flow
+
 For dataflow, concurrency model, and per-subagent contracts, see `ARCHITECTURE.md`.
 
 ## ❓ FAQ
 
 1. **Why not use Claude's skill-creator skill?** This isn't a better version of it, but a different one that considers more non-technical folks that won't need (or want to understand) the data-driven, iterative loop.
-2. **Will the skill I create by really good?** It depends on your prompting and how much you collaborate with the skill. 
+2. **Will the skill I create by really good?** Building skills and getting what you want from AI is 90% dependent on the user.
 3. **What are these "best practices" though?** Using an LLM-assisted flow, I combined [academic principles](https://jdforsythe.github.io/10-principles/overview/), [best practices](https://github.com/seojoonkim/agentlinter), [Claude's own recommendations](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf), and [agent skills foundations](https://leehanchung.github.io/blogs/2025/10/26/claude-skills-deep-dive/) to create a lightweight reference that this skill refers to. 
-4. **But does it really cover all the best practices?** Of course it does not, but I operate on the 80/20 principle. 
-5. **Can I contribute to this?** For now, no as I'm still in alpha testing. If you've got ideas, just shoot me a DM and let's chat.
+4. **But does it really cover all the best practices?** Probably not, but I operate on the 80/20 principle. 
+5. **Can I contribute to this?** Shoot me a DM.
 6. **Is this secure?** As far as possible, it only reads and writes in folders that you give access to and does not ask for more. In true dogfooding fashion, I also ran the `audit-lint` flow to ensure it doesn't do anything funny (e.g. prompt injections). If you spot anything, please shoot me a DM immediately. 
+7. **Will you improve this?** Yes. I have ideas in mind. Roadmap WIP.
+8. **Why did you decide to build this skill?** I wanted to build a skill to evaluate ideas. I then decided to build a skill to build that skill. I realised halfway through I was in too deep, and here we are. 
+9.  **Did this cost a lot to build?** I may have used tokens inefficiently in the beginning.
